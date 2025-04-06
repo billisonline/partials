@@ -1,0 +1,49 @@
+{
+    "name": "byanelli/partials",
+    "description": "(todo)",
+    "keywords": [
+        "byanelli",
+        "partials"
+    ],
+    "homepage": "https://github.com/byanelli/partials",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Bill Yanelli",
+            "email": "bill.yanelli@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^8.4"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10.3.2",
+        "laravel/pint": "^1.0",
+        "spatie/ray": "^1.28"
+    },
+    "autoload": {
+        "psr-4": {
+            "BYanelli\\Partials\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "BYanelli\\Partials\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "test-coverage": "vendor/bin/phpunit --coverage",
+        "format": "vendor/bin/pint"
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+
+            "phpstan/extension-installer": true
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
