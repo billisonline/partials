@@ -3,83 +3,85 @@
 namespace BYanelli\Partials\Tests;
 
 use PHPUnit\Framework\TestCase;
-use function BYanelli\Partials\Arrays\{
-    p_array_all,
-    p_array_any,
-    p_array_chunk,
-    p_array_column,
-    p_array_diff,
-    p_array_diff_assoc,
-    p_array_diff_key,
-    p_array_filter,
-    p_array_map,
-    p_array_reduce,
-};
+
+use function BYanelli\Partials\Arrays\p_array_all;
+use function BYanelli\Partials\Arrays\p_array_any;
+use function BYanelli\Partials\Arrays\p_array_chunk;
+use function BYanelli\Partials\Arrays\p_array_column;
+use function BYanelli\Partials\Arrays\p_array_diff;
+use function BYanelli\Partials\Arrays\p_array_diff_assoc;
+use function BYanelli\Partials\Arrays\p_array_diff_key;
+use function BYanelli\Partials\Arrays\p_array_filter;
+use function BYanelli\Partials\Arrays\p_array_map;
+use function BYanelli\Partials\Arrays\p_array_reduce;
 use function Psl\Fun\pipe;
 
 class ArrayFunctionsTest extends TestCase
 {
-    public function testArrayAll() {
+    public function test_array_all()
+    {
         // Test with numbers (all greater than 0)
         $this->assertTrue(
             pipe(
-                p_array_all(fn(int $x) => $x > 0),
+                p_array_all(fn (int $x) => $x > 0),
             )([1, 2, 3, 4, 5])
         );
 
         // Test with numbers (contains elements not satisfying the condition)
         $this->assertFalse(
             pipe(
-                p_array_all(fn(int $x) => $x > 0),
+                p_array_all(fn (int $x) => $x > 0),
             )([1, 2, -3, 4, 5])
         );
 
         // Test with strings (all have length > 3)
         $this->assertTrue(
             pipe(
-                p_array_all(fn(string $x) => strlen($x) > 3),
+                p_array_all(fn (string $x) => strlen($x) > 3),
             )(['hello', 'world', 'test'])
         );
 
         // Test with strings (contains strings with length <= 3)
         $this->assertFalse(
             pipe(
-                p_array_all(fn(string $x) => strlen($x) > 3),
+                p_array_all(fn (string $x) => strlen($x) > 3),
             )(['hi', 'world', 'test'])
         );
     }
 
-    public function testArrayAny() {
+    public function test_array_any()
+    {
         // Test with numbers (at least one greater than 0)
         $this->assertTrue(
             pipe(
-                p_array_any(fn(int $x) => $x > 0),
+                p_array_any(fn (int $x) => $x > 0),
             )([-1, -2, 3, -4, -5])
         );
 
         // Test with numbers (none greater than 0)
         $this->assertFalse(
             pipe(
-                p_array_any(fn(int $x) => $x > 0),
+                p_array_any(fn (int $x) => $x > 0),
             )([-1, -2, -3, -4, -5])
         );
 
         // Test with strings (at least one has length > 3)
         $this->assertTrue(
             pipe(
-                p_array_any(fn(string $x) => strlen($x) > 3),
+                p_array_any(fn (string $x) => strlen($x) > 3),
             )(['hi', 'world', 'no'])
         );
 
         // Test with strings (none has length > 3)
         $this->assertFalse(
             pipe(
-                p_array_any(fn(string $x) => strlen($x) > 3),
+                p_array_any(fn (string $x) => strlen($x) > 3),
             )(['hi', 'no', 'ok'])
         );
     }
 
-    public function testArrayChunk() {
+    public function test_array_chunk()
+    {
         // Test with default key behavior (keys NOT preserved)
         $this->assertEquals(
             [[1, 2], [3, 4], [5]],
@@ -121,7 +123,8 @@ class ArrayFunctionsTest extends TestCase
         );
     }
 
-    public function testArrayColumn() {
+    public function test_array_column()
+    {
         $testArray = [
             ['id' => 1, 'name' => 'Alice', 'age' => 30],
             ['id' => 2, 'name' => 'Bob', 'age' => 25],
@@ -157,7 +160,7 @@ class ArrayFunctionsTest extends TestCase
             [
                 1 => ['id' => 1, 'name' => 'Alice', 'age' => 30],
                 2 => ['id' => 2, 'name' => 'Bob', 'age' => 25],
-                3 => ['id' => 3, 'name' => 'Charlie', 'age' => 35]
+                3 => ['id' => 3, 'name' => 'Charlie', 'age' => 35],
             ],
             pipe(
                 p_array_column(null, 'id'),
@@ -173,7 +176,8 @@ class ArrayFunctionsTest extends TestCase
         );
     }
 
-    public function testArrayDiff() {
+    public function test_array_diff()
+    {
         $baseArray = [1, 2, 3, 4, 5];
 
         // Test with one array to compare
@@ -225,7 +229,8 @@ class ArrayFunctionsTest extends TestCase
         );
     }
 
-    public function testArrayDiffAssoc() {
+    public function test_array_diff_assoc()
+    {
         $baseArray = [
             'a' => 1,
             'b' => 2,
@@ -285,7 +290,8 @@ class ArrayFunctionsTest extends TestCase
         );
     }
 
-    public function testArrayDiffKey() {
+    public function test_array_diff_key()
+    {
         $baseArray = [
             'a' => 1,
             'b' => 2,
@@ -342,14 +348,15 @@ class ArrayFunctionsTest extends TestCase
         );
     }
 
-    public function testArrayFilter() {
+    public function test_array_filter()
+    {
         // Case 1: Normal case with multiples of 5 and 10
         $this->assertEquals(
             20,
             // Multiply all numbers by 5 and get the last multiple of 10.
             pipe(
-                p_array_map(fn(int $x) => $x * 5),
-                p_array_filter(fn(int $x) => ($x % 10) == 0),
+                p_array_map(fn (int $x) => $x * 5),
+                p_array_filter(fn (int $x) => ($x % 10) == 0),
                 array_pop(...),
             )([3, 4, 5])
         );
@@ -359,8 +366,8 @@ class ArrayFunctionsTest extends TestCase
             null,
             // No numbers satisfy the filter condition
             pipe(
-                p_array_map(fn(int $x) => $x * 5),
-                p_array_filter(fn(int $x) => ($x % 10) == 0),
+                p_array_map(fn (int $x) => $x * 5),
+                p_array_filter(fn (int $x) => ($x % 10) == 0),
                 array_pop(...),
             )([0, 1])
         );
@@ -370,8 +377,8 @@ class ArrayFunctionsTest extends TestCase
             null,
             // Input array is empty, result is null
             pipe(
-                p_array_map(fn(int $x) => $x * 5),
-                p_array_filter(fn(int $x) => ($x % 10) == 0),
+                p_array_map(fn (int $x) => $x * 5),
+                p_array_filter(fn (int $x) => ($x % 10) == 0),
                 array_pop(...),
             )([])
         );
@@ -381,20 +388,21 @@ class ArrayFunctionsTest extends TestCase
             100,
             // Multiply all numbers by 5, filter multiples of 10, and retrieve the last one
             pipe(
-                p_array_map(fn(int $x) => $x * 5),
-                p_array_filter(fn(int $x) => ($x % 10) == 0),
+                p_array_map(fn (int $x) => $x * 5),
+                p_array_filter(fn (int $x) => ($x % 10) == 0),
                 array_pop(...),
             )(range(1, 20))
         );
     }
 
-    public function testArrayMap() {
+    public function test_array_map()
+    {
         // Case 1: Simple mapping (baseline)
         $this->assertEquals(
             [5, 10, 15],
             // Maps each number to its value multiplied by 5
             pipe(
-                p_array_map(fn($x) => $x * 5),
+                p_array_map(fn ($x) => $x * 5),
             )([1, 2, 3])
         );
 
@@ -403,7 +411,7 @@ class ArrayFunctionsTest extends TestCase
             [],
             // Maps an empty array to another empty array
             pipe(
-                p_array_map(fn($x) => $x * 5),
+                p_array_map(fn ($x) => $x * 5),
             )([])
         );
 
@@ -412,7 +420,7 @@ class ArrayFunctionsTest extends TestCase
             [2.5, 5.0, 7.5],
             // Maps floating-point numbers correctly
             pipe(
-                p_array_map(fn($x) => $x * 2.5),
+                p_array_map(fn ($x) => $x * 2.5),
             )([1, 2, 3])
         );
 
@@ -421,17 +429,18 @@ class ArrayFunctionsTest extends TestCase
             [-5, -10, -15],
             // Works with negative numbers correctly
             pipe(
-                p_array_map(fn($x) => $x * 5),
+                p_array_map(fn ($x) => $x * 5),
             )([-1, -2, -3])
         );
     }
 
-    public function testArrayReduce() {
+    public function test_array_reduce()
+    {
         $this->assertEquals(
             15,
             // Sum all numbers in the array
             pipe(
-                p_array_reduce(fn($carry, $item) => $carry + $item, 0),
+                p_array_reduce(fn ($carry, $item) => $carry + $item, 0),
             )([1, 2, 3, 4, 5])
         );
 
@@ -439,7 +448,7 @@ class ArrayFunctionsTest extends TestCase
             'hello world!',
             // Concatenate strings in the array
             pipe(
-                p_array_reduce(fn($carry, $item) => $carry . $item, ''),
+                p_array_reduce(fn ($carry, $item) => $carry.$item, ''),
             )(['hello', ' ', 'world', '!'])
         );
     }
