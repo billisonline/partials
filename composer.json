@@ -1,6 +1,7 @@
 {
     "name": "byanelli/partials",
-    "description": "(todo)",
+    "description": "Partially applied versions of most PHP builtin functions. For use with pipe libraries and/or the upcoming pipe operator.",
+
     "keywords": [
         "byanelli",
         "partials"
@@ -18,14 +19,18 @@
         "php": "^8.4"
     },
     "require-dev": {
-        "phpunit/phpunit": "^10.3.2",
+        "azjezz/psl": "^3.2",
         "laravel/pint": "^1.0",
+        "phpunit/phpunit": "^10.3.2",
         "spatie/ray": "^1.28"
     },
     "autoload": {
         "psr-4": {
             "BYanelli\\Partials\\": "src"
-        }
+        },
+        "files": [
+            "src/arrays.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
